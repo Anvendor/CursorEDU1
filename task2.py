@@ -18,4 +18,4 @@ class Profile:
 
 profile1 = Profile("Anna", "Bytsenko", "+380 63 623 18 44", "c. Sumy, **** Str.", "anna.nvvs125@gmail.com", "2005-06-24", 17, "Female")
 
-print(profile1)  # prints: [John, Doe, 123-456-7890, 123 Main St., john@example.com, 2000-01-01, 22, Male]
+print(profile1)  
