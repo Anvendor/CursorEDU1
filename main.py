@@ -1,104 +1,83 @@
-#parent class
-class Animals:
-    def eat(self):
-        print("The animal is eating.")
+import random
 
-    def sleep(self):
-        print("The animal is sleeping.")
+# Constructor to initialize the Person object with name, age, money, and home ownership status
+class Person:
+    def __init__(self, name, age, money, has_home):
+        self.name = name
+        self.age = age
+        self.money = money
+        self.has_home = has_home
 
-#subclass 1
-class Dog(Animals):
-    def bark(self):
-        print("The dog is barking.")
+    # Method to print the person's information
+    def provide_info(self):
+        print(f"Name: {self.name}")
+        print(f"Age: {self.age}")
+        print(f"Money: {self.money}")
+        print(f"Has home: {self.has_home}")
 
-    def fetch(self):
-        print("The dog is fetching.")
+    # Method to increase the person's money
+    def make_money(self, amount):
+        self.money += amount
 
-#subclass 2
-class Cat(Animals):
-    def purr(self):
-        print("The cat is purring.")
-
-    def scratch(self):
-        print("The cat is scratching.")
-
-#subclass 3
-class Bird(Animals):
-    def chirp(self):
-        print("The bird is chirping.")
-
-    def fly(self):
-        print("The bird is flying.")
-
-#subclass 4
-class Fish(Animals):
-    def swimm(self):
-        print("The fish is swimming.")
-
-    def breathe_underwater(self):
-        print("The fish is breathing underwater.")
-#calling different function
-dog = Dog()
-dog.bark()
-dog.eat()
-
-cat = Cat()
-cat.scratch()
-cat.sleep()
-
-bird = Bird()
-bird.chirp()
-bird.eat()
-
-fish = Fish()
-fish.swimm()
-fish.sleep()
+    def buy_home(self, cost):
+        if self.money >= cost:
+            self.money -= cost
+            self.has_home = True
+            print("Congratulations! You have bought a new home.")
+        else:
+            print("Sorry, you don't have enough money to buy this home.")
 
 
-#direct instance check
-if isinstance(dog,Animals) == True:
-    print("Dog is an animal.")
-if isinstance(cat,Animals) == True:
-    print("Cat is an animal.")
-if isinstance(bird, Animals) == True:
-    print("Bird is an animal.")
-if isinstance(fish, Animals) == True:
-    print("Fish is an animal.")
+class House:
+    def __init__(self, area, cost):
+        self.area = area
+        self.cost = cost
 
-#try to check instance by loop
-Animals_list = [dog, cat, bird, fish ]
-
-for i in Animals_list:
-
-    if isinstance(i,Animals) == True:
-        print(f"{Animals_list.index(i)+1}){i} is an animal.")
-    else:
-        print(f"Seems like {i} is NOT an animal")
+    def apply_discount(self, discount):
+        self.cost -= discount
 
 
+class Realtor:
+    instance = None
+    houses = []
+
+    @classmethod
+    def get_instance(cls):
+        if not cls.instance:
+            cls.instance = Realtor()
+            cls.houses = [House(40, 50000), House(50, 75000), House(60, 100000)]
+        return cls.instance
+
+    def provide_info(self):
+        print("Available houses:")
+        for i, house in enumerate(self.houses):
+            print(f"House {i + 1}: Area {house.area}m2, Cost {house.cost}")
+
+    def give_discount(self, house_index, discount):
+        house = self.houses[house_index - 1]
+        house.apply_discount(discount)
+        print(f"Discount of {discount} applied to House {house_index}. New cost: {house.cost}")
+
+    def steal_money(self):
+        if random.random() < 0.1:
+            print("Oops! The realtor has stolen your money!")
+            return True
+        else:
+            return False
 
 
-#1.a
+# Example usage
+person = Person("Anna", 17, 120000, False)
+realtor = Realtor.get_instance()
 
-#second parent class
-class Human:
-    def eat(self):
-        print("Eating...")
-    def sleep(self):
-        print("Sleeping...")
-    def study(self):
-        print("Studing...")
-    def work(self):
-        print("Working...")
-#subclass
-class Centaur(Human,Animals):
-    def trotting(self):
-        print("Trotting...")
-    def walk(self):
-        print("Walking...")
+person.provide_info()
+realtor.provide_info()
+realtor.give_discount(1, 10000)
+realtor.give_discount(2, 20000)
+person.buy_home(realtor.houses[0].cost)
+person.provide_info()
 
-cent = Centaur()
-cent.work()
-cent.eat()
-cent.sleep()
-cent.trotting()
+if realtor.steal_money():
+    person.money = 0
+
+person.provide_info()  
